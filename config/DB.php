@@ -1,6 +1,7 @@
 <?
 return [
+	'ip' => 'localhost',
     'login' => 'root',
-    'password' => 'root',
-    'db' => 'test_vi_ru'
+    'password' => '1q9HRqSY',
+    'dbname' => 'test_vi_ru'
 ];
