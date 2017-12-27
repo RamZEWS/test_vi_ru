@@ -6,6 +6,7 @@ $couriers = Courier::getAll([], 'fio asc');
 $regions = Region::getAll([], 'name asc');
 ?>
 <h1>Добавить поездку</h1>
+<p><a href="/">Вернуться к списку</a></p>
 <form>
 	<select name="courier_id" id="courier_id">
 		<?

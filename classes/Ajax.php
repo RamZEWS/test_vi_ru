@@ -13,7 +13,7 @@ class Ajax {
 			$region_id = isset($_REQUEST['region_id']) ? intval($_REQUEST['region_id']) : false;
 			$region = $region_id ? Region::getOne(['id=' => $region_id]) : false;
 			if($region) {
-				$date_start = isset($_REQUEST['date_start']) ? date('Y-m-d', strtotime($_REQUEST['date_start'])) : false;
+				$date_start = $_REQUEST['date_start'] ? date('Y-m-d', strtotime($_REQUEST['date_start'])) : false;
 				$date_end = date('Y-m-d', strtotime('+ ' . $region['duration'] . ' days', strtotime($date_start)));
 				if($date_start && $date_end) {
 					$exist = Trip::getExist($courier['id'], $date_start, $date_end);

@@ -3,7 +3,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].'/models/Courier.php');
 require_once($_SERVER["DOCUMENT_ROOT"].'/models/Region.php');
 require_once($_SERVER["DOCUMENT_ROOT"].'/models/Trip.php');
 
-$date = $_GET['date'] ?: date('d.m.Y');
+$date = $_GET['date'] ?: date('Y-m-d');
 ?>
 <h1>Маршруты на <?= $date; ?></h1>
 <?
@@ -17,6 +17,9 @@ $regions = Region::getAll();
 	<button type="submit">Поиск</button>
 </form>
 
+<?
+if($trips){
+?>
 <table cellpadding="5" cellspacing="0">
 	<thead>
 		<tr>
@@ -45,5 +48,12 @@ $regions = Region::getAll();
 		?>		
 	</tbody>
 </table>
+<?
+} else {
+?>
+	<div>Нет поездок на выбранную дату</div>
+<?
+}
+?>
 
 <a href="/add.php">Добавить поездку</a>
