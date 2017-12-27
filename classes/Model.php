@@ -28,7 +28,6 @@ class Model {
 				$sql = 'INSERT INTO ' . $table . ' (' . implode(', ', array_keys($map)) . ') VALUES (' . implode(', ', $values) . ')';
 				$res = $db->query($sql);
 				if($res) {
-		        	$res->close();
 					return $db->mysqli->insert_id;
 				} else {
 					throw new Exception('INSERT ERROR: ' . $db->mysqli->error);
@@ -94,10 +93,10 @@ class Model {
 			$filter_str = '';
 			if(isset($filter['OR']) || isset($filter['AND'])) {
 				if(isset($filter['OR']) && is_array($filter['OR'])) {
-					$arrF[] = '('.self::getWhere($filter['OR']).')';
+					$arrF[] = '('.implode(' OR ', self::getWhere($filter['OR'])).')';
 				}
 				if(isset($filter['AND']) && is_array($filter['AND'])) {
-					$arrF[] = '('.self::getWhere($filter['AND']).')';
+					$arrF[] = '('.implode(' AND ', self::getWhere($filter['AND'])).')';
 				}
 			} else {
 				$arrF = self::getWhere($filter);
@@ -105,7 +104,7 @@ class Model {
 			$filter_str = $arrF ? implode(' AND ', $arrF) : '1=1';
 
 			$sql = 'SELECT * FROM ' . $table . ' WHERE ' . $filter_str. ' ORDER BY ' . ($sort ?: 'id asc');
-			if($limit) {
+			if(!is_null($limit)) {
 				$sql = $sql . ' LIMIT ' . implode(', ', [$limit, $offset]);
 			}
 			$res = $db->query($sql);
@@ -125,7 +124,7 @@ class Model {
 	}
 
 	public static function getOne($filter = [], $sort = '') {
-		$result = self::getAll($filter, $sort, 1);
+		$result = static::getAll($filter, $sort, 0, 1);
 		return current($result);
 	}
 

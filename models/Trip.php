@@ -16,5 +16,17 @@ class Trip extends Model {
 			'date_end' => ['type' => 'date'],
 		];
 	}
+
+	public static function getExist($courier_id, $date_start, $date_end){
+		global $db;
+		$sql = 'SELECT * FROM `' . self::tableName() . '` WHERE courier_id = ' . $courier_id . ' AND
+				(
+					(date_end <= "' . $date_end . '" AND date_start >= "' . $date_start . '") OR
+					("' . $date_end . '" BETWEEN date_start AND date_end) OR
+					("' . $date_start . '" BETWEEN date_start AND date_end)
+				) LIMIT 0, 1';
+		$res = $db->query($sql);
+		return $res->num_rows > 0;
+	}
 	
 }
